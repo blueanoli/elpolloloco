@@ -1,5 +1,6 @@
 canvas{
     background-color: black;
+    border: 3px solid black;
 }
 body{
     display: flex;
@@ -7,4 +8,7 @@ body{
     align-items: center;
     flex-direction: column;
     height: 90vh;
+    background-image: url('img/bodybg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
 }
