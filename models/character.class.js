@@ -3,6 +3,7 @@ class Character extends MovableObject {
     y = 145;
     speed = 7;
 
+
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
         'img/2_character_pepe/2_walk/W-22.png',
@@ -69,10 +70,16 @@ class Character extends MovableObject {
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONG_IDLE);
+        this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
         this.walking_sound.loop = true;
-        this.walking_sound.volume = 0.01;    
+        this.walking_sound.volume = 0.01;
 
+        this.applyGravity();
         this.animate();
     }
 
@@ -81,32 +88,39 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false;
                 this.walking_sound.play();
             }
             if (this.world.keyboard.LEFT && this.x > 0) {
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();
             }
-            this.world.camera_x = -this.x + 75;
+
+            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.jump();
+                // this.jumping_sound.play();
+            }
+            this.world.camera_x = -this.x + 50;
 
         }, 1000 / 30);
 
         setInterval(() => {
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+                
+            } else if (this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_JUMP);
+            } else {
 
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                this.playAnimation(this.IMAGES_WALKING);
+                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
             }
         }, 70);
 
     }
-
-    jump() {
-        console.log('jump');
-    }
-
 
 
 } // end of class Character
