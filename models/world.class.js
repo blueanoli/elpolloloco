@@ -13,7 +13,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.level_music.volume = 0.1;
+        this.level_music.volume = 0.015;
         this.level_music.loop = true;
         this.level_music.play();
         this.draw();
