@@ -7,11 +7,15 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
+    level_music = new Audio('audio/elpolloloco.wav');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level_music.volume = 0.1;
+        this.level_music.loop = true;
+        this.level_music.play();
         this.draw();
         this.setWorld();
         this.run();
