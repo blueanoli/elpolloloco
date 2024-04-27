@@ -42,6 +42,9 @@ animate() {
 
 }
 
+chickenStomped() {
+    this.loadImage(this.IMAGE_DEAD); 
+}
 
 
 } // end of class Chicken

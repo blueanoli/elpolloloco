@@ -15,7 +15,7 @@ class World {
         this.keyboard = keyboard;
         this.level_music.volume = 0.015;
         this.level_music.loop = true;
-        this.level_music.play();
+        //this.level_music.play();
         this.draw();
         this.setWorld();
         this.run();
@@ -27,9 +27,6 @@ class World {
 
     run(){
         setInterval(() => {
-
-
-
             this.checkCollisions();
             this.checkThrowObjects();
         }, 250);
@@ -43,15 +40,24 @@ class World {
         }
     }
 
-    checkCollisions(){
-        this.level.enemies.forEach(e => {
-            if(this.character.isColliding(e)){
-                    this.character.hit();
-                    console.log('hit', this.character.energy);
-                    this.statusBar.setPercentage(this.character.energy);
-                }
-        });
-    }
+    checkCollisions() {
+        for (let i = this.level.enemies.length - 1; i >= 0; i--) {
+            let e = this.level.enemies[i];
+    
+            if (this.character.isHitboxColliding(e)) {
+                e.chickenStomped(); 
+                console.log('chicken stomped by character');
+                this.level.enemies.splice(i, 1); 
+                continue;
+            }
+    
+            if (this.character.isColliding(e)) {
+                this.character.hit();
+                console.log('hit by enemy', this.character.energy);
+                this.statusBar.setPercentage(this.character.energy);
+            }
+        }
+    }  
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -92,6 +98,8 @@ class World {
 
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
+        mo.drawStompBox(this.ctx);
+        mo.drawCharacterHitBox(this.ctx);
 
         if(mo.otherDirection){
            this.flipImageBack(mo);
@@ -109,11 +117,5 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
-
-
-            // if(character.x + character.width > chicken.x &&
-        //     character.y + character.height > chicken.y &&
-        //     character.x < chicken.x &&
-        //     character.y < chicken.y + chicken.height)
 
 } // end of class World

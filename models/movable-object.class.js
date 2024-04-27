@@ -42,21 +42,21 @@ class MovableObject extends DrawableObject {
         this.speedY = 25;
     }
 
-    /*isColliding(obj) {
-        return (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) &&
-            (this.x + this.offsetY + this.height) >= obj.Y &&
-            (this.x + this.offsetY) <= (obj.Y + obj.height) &&
-            obj.onCollisionCourse;
-        }*/
-
-    // character.isColliding(chicken);
-    isColliding(mo) { // JUNUS VIDEO
+    isColliding(mo) { 
         return this.x + this.width > mo.x &&
             this.y + this.height > mo.y &&
             this.x < mo.x &&
             this.y < mo.y + mo.height;
     }
 
+    isHitboxColliding(mo) {
+        let characterBottom = this.y + this.height;
+        let withinHorizontalBounds = (this.x + 5 < mo.x + mo.width) && (this.x + this.width - 5 > mo.x);
+        let stomping = characterBottom >= mo.y && characterBottom <= mo.y + mo.height;
+    
+        return withinHorizontalBounds && stomping;
+    }
+    
     hit() {
         this.energy -= 20;
         if (this.energy <= 0) {

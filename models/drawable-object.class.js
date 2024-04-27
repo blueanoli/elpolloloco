@@ -25,11 +25,31 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof BabyChick || this instanceof Chicken || this instanceof Endboss) {
+        if (this instanceof BabyChick || this instanceof Chicken || this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = '4';
             ctx.strokeStyle = 'red';
             ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
+    drawCharacterHitBox(ctx){
+        if(this instanceof Character){
+            ctx.beginPath();
+            ctx.lineWidth = '4';
+            ctx.strokeStyle = 'green';
+            ctx.rect(this.x + 20, this.y + 90, this.width - 50, this.height - 100);
+            ctx.stroke();
+        }
+    }
+
+    drawStompBox(ctx){
+        if(this instanceof Character){
+            ctx.beginPath();
+            ctx.lineWidth = '4';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x + 5, this.y + 280, this.width - 10, this.height - 250);
             ctx.stroke();
         }
     }
