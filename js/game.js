@@ -9,6 +9,13 @@ function init(){
     console.log('About', world);
 }
 
+function startGame(){
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('canvas').style.display = 'block';
+    document.getElementById('startButton').style.display = 'none';
+    init();
+}
+
 document.addEventListener('keydown', (event) => {
     if(event.keyCode == 39){
         keyboard.RIGHT = true;

@@ -25,9 +25,38 @@ h1 {
     font-variant: small-caps;
     letter-spacing: 2px;
 }
+.startScreen-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .startScreen{
     width: 720px;
     height: 480px;
+    position: relative;
+}
+.startButton{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-color: #f1c40f;
+    color: black;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: 2px solid #332b0b;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.startButton:hover{
+    background-color: #f39c12;
+}
+.startButton:focus{
+    outline: none;
+}
+.startButton:active{
+    background-color: #85560a;
 }
 .d-none{
     display: none;
