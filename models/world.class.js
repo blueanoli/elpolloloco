@@ -43,21 +43,24 @@ class World {
     checkCollisions() {
         for (let i = this.level.enemies.length - 1; i >= 0; i--) {
             let e = this.level.enemies[i];
-    
-            if (this.character.isHitboxColliding(e)) {
+        
+            if (!e.isDead && this.character.isHitboxColliding(e)) {
                 e.chickenStomped(); 
                 console.log('chicken stomped by character');
-                this.level.enemies.splice(i, 1); 
-                continue;
+                setTimeout(() => {
+                    this.level.enemies.splice(i, 1);
+                }, 500); 
+                continue; 
             }
-    
-            if (this.character.isColliding(e)) {
+        
+            if (!e.isDead && this.character.isColliding(e)) {
                 this.character.hit();
                 console.log('hit by enemy', this.character.energy);
                 this.statusBar.setPercentage(this.character.energy);
             }
         }
-    }  
+    }
+    
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

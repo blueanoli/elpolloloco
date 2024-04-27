@@ -2,7 +2,7 @@ class MovableObject extends DrawableObject {
     speed = 0.2;
     otherDirection = false;
     speedY = 0;
-    acceleration = 2;
+    acceleration = 2.2;
     energy = 100;
     lastHit = 0;
 
@@ -29,7 +29,7 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
         this.currentImage++;
     }
-
+  
     moveRight() {
         this.x += this.speed;
     }
@@ -39,30 +39,44 @@ class MovableObject extends DrawableObject {
     }
 
     jump() {
-        this.speedY = 25;
+        this.speedY = 28;
     }
 
-    isColliding(mo) { 
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
+    isColliding(mo) {
+        if (mo.isDead) { // Überprüfen, ob das Objekt tot ist
+            return false; // Keine Kollision, wenn das Objekt tot ist
+        }
+        if (this instanceof Character) {
+            return (this.x + 20 + this.width - 50) > mo.x &&
+                   (this.y + 90 + this.height - 100) > mo.y &&
+                   (this.x + 20) < (mo.x + mo.width) &&
+                   (this.y + 90) < (mo.y + mo.height);
+        } else {
+            return this.x + this.width > mo.x &&
+                   this.y + this.height > mo.y &&
+                   this.x < mo.x &&
+                   this.y < mo.y + mo.height;
+        }
     }
 
     isHitboxColliding(mo) {
-        let characterBottom = this.y + this.height;
-        let withinHorizontalBounds = (this.x + 5 < mo.x + mo.width) && (this.x + this.width - 5 > mo.x);
-        let stomping = characterBottom >= mo.y && characterBottom <= mo.y + mo.height;
+        let characterStompBottom = this.y + 280 + (this.height - 240);
+        let withinHorizontalBounds = (this.x -15 < mo.x + mo.width) && (this.x + this.width + 30 > mo.x);
+        let stomping = characterStompBottom >= mo.y && characterStompBottom <= mo.y + mo.height;
     
         return withinHorizontalBounds && stomping;
     }
     
     hit() {
-        this.energy -= 20;
-        if (this.energy <= 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
+        let currentTime = new Date().getTime();
+        let timeSinceLastHit = (currentTime - this.lastHit) / 1000; 
+    
+        if (timeSinceLastHit > 1.5) { 
+            this.energy -= 20;
+            if (this.energy <= 0) {
+                this.energy = 0;
+            }
+            this.lastHit = currentTime; 
         }
     }
 
@@ -71,9 +85,10 @@ class MovableObject extends DrawableObject {
     }
 
     isHurt() {
-        let timePassed = new Date().getTime() - this.lastHit;
-        timePassed = timePassed / 1000;
-        return timePassed < 0.75;
+        let currentTime = new Date().getTime();
+        let timePassed = (currentTime - this.lastHit) / 1000; 
+        return timePassed < 1.5; 
     }
+    
 
 } // end of class MovableObject

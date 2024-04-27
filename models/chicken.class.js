@@ -19,16 +19,22 @@ constructor() {
     this.speed = 0.15 + Math.random() * 0.5;
     this.chicken_sound.volume = 0.02;
     this.animate();
+    this.isDead = false;
 }
 
 animate() {
     setInterval(() => {
-        this.moveLeft();
+        if (!this.isDead) {
+            this.moveLeft();
+        }
     }, 1000 / 30);
 
     setInterval(() => {
-        this.playAnimation(this.IMAGES_WALKING);
+        if (!this.isDead) {
+            this.playAnimation(this.IMAGES_WALKING);
+        }
     }, 200);
+  
 
     // setInterval(() => {
     //     if (!this.soundPlaying) { 
@@ -44,7 +50,7 @@ animate() {
 
 chickenStomped() {
     this.loadImage(this.IMAGE_DEAD); 
+    this.isDead = true;
 }
-
 
 } // end of class Chicken

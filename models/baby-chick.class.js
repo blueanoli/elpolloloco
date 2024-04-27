@@ -21,11 +21,15 @@ class BabyChick extends Chicken {
 
     animate() {
         setInterval(() => {
-            this.moveLeft();
+            if (!this.isDead) {
+                this.moveLeft();
+            }
         }, 1000 / 30);
-        
+    
         setInterval(() => {
-            this.playAnimation(this.IMAGES_WALK);
+            if (!this.isDead) {
+                this.playAnimation(this.IMAGES_WALK);
+            }
         }, 200);
-    }
+}
 }
