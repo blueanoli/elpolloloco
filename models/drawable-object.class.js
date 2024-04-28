@@ -54,4 +54,14 @@ class DrawableObject {
         }
     }
 
+    drawBottleBox(ctx){
+        if(this instanceof ThrowableObject){
+            ctx.beginPath();
+            ctx.lineWidth = '4';
+            ctx.strokeStyle = 'purple';
+            ctx.rect(this.x + 30, this.y + 15, this.width - 60, this.height - 30);
+            ctx.stroke();
+        }
+    }
+
 } // end of class DrawableObject

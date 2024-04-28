@@ -43,8 +43,8 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        if (mo.isDead) { // Überprüfen, ob das Objekt tot ist
-            return false; // Keine Kollision, wenn das Objekt tot ist
+        if (mo.isDead) { 
+            return false;
         }
         if (this instanceof Character) {
             return (this.x + 20 + this.width - 50) > mo.x &&
@@ -59,7 +59,7 @@ class MovableObject extends DrawableObject {
         }
     }
 
-    isHitboxColliding(mo) {
+    isStompboxColliding(mo) {
         let characterStompBottom = this.y + 280 + (this.height - 240);
         let withinHorizontalBounds = (this.x -15 < mo.x + mo.width) && (this.x + this.width + 30 > mo.x);
         let stomping = characterStompBottom >= mo.y && characterStompBottom <= mo.y + mo.height;
