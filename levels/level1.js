@@ -2,9 +2,7 @@ let level1;
 
 function initLevel(){
 
-level1 = 
-
-new Level( [
+level1 = new Level( [
     new Chicken(),
     new BabyChick(),
     new Endboss()
@@ -62,6 +60,9 @@ new Level( [
 ],
 [
     new StatusBar()
+],
+[
+    new BottleBar()
 ]
 );
 }
