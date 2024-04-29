@@ -10,10 +10,11 @@ function init(){
 }
 
 function startGame(){
+    initLevel();
+    init();
     document.getElementById('startScreen').style.display = 'none';
     document.getElementById('canvas').style.display = 'block';
     document.getElementById('startButton').style.display = 'none';
-    init();
 }
 
 document.addEventListener('keydown', (event) => {

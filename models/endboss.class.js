@@ -1,7 +1,9 @@
-class Endboss extends MovableObject{
+class Endboss extends MovableObject {
     y = -55;
     height = 520;
     width = 400;
+    leftPoint = 3100;
+    rightPoint = 3600;
 
     IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -43,29 +45,53 @@ class Endboss extends MovableObject{
     hadFirstContact = false;
 
     constructor() {
-        super().loadImage('img/4_enemie_boss_chicken/1_walk/G1.png');
+        super().loadImage('img/4_enemie_boss_chicken/2_alert/G5.png');
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_ATTACK);
 
-        this.x = 3850;
+        this.x = 3500;
+        this.speed = 8;
         this.animate();
     }
 
     animate() {
         let i = 0;
+        let walkingDirection = 'left';
+        let characterReachedPosition = false; 
+    
         setInterval(() => {
-            if (i < this.IMAGES_ALERT.length ) {
+            if (world.character.x > 3000 && !characterReachedPosition) {
+                characterReachedPosition = true;
                 this.playAnimation(this.IMAGES_ALERT);
-            } else{
-            this.playAnimation(this.IMAGES_WALKING);
-        }
-        i++;
-        if(world.character.x > 3400 && !this.hadFirstContact){
-            i = 0;
-            this.hadFirstContact = true;
-        }
-        }, 200);
+                setTimeout(() => {
+                    this.moveLeft();
+                }, 1000); 
+            }
+    
+            if (characterReachedPosition) {
+                if (i < this.IMAGES_ALERT.length) {
+                    this.playAnimation(this.IMAGES_ALERT);
+                    i++;
+                } else {
+                    if (walkingDirection === 'left') {
+                        if (this.x > this.leftPoint) {
+                            this.playAnimation(this.IMAGES_WALKING);
+                            this.moveLeft();
+                        } else {
+                            walkingDirection = 'right';
+                        }
+                    } else {
+                        if (this.x < this.rightPoint) {
+                            this.playAnimation(this.IMAGES_WALKING);
+                            this.moveRight();
+                        } else {
+                            walkingDirection = 'left';
+                        }
+                    }
+                }
+            }
+        }, 100);
     }
-
 
 } // end of class Endboss

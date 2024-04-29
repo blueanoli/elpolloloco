@@ -25,16 +25,16 @@ class World {
         this.character.world = this;
     }
 
-    run(){
+    run() {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
         }, 250);
     }
 
-    checkThrowObjects(){
+    checkThrowObjects() {
         let bottle = new ThrowableObject(this.character.x + 35, this.character.y + 115);
-        if(this.keyboard.D){
+        if (this.keyboard.D) {
             this.throwableObjects.push(bottle);
             this.keyboard.D = false;
         }
@@ -43,16 +43,16 @@ class World {
     checkCollisions() {
         for (let i = this.level.enemies.length - 1; i >= 0; i--) {
             let e = this.level.enemies[i];
-        
+
             if (!e.isDead && this.character.isStompboxColliding(e)) {
-                e.chickenStomped(); 
+                e.chickenStomped();
                 console.log('chicken stomped by character');
                 setTimeout(() => {
                     this.level.enemies.splice(i, 1);
-                }, 500); 
-                continue; 
+                }, 500);
+                continue;
             }
-        
+
             if (!e.isDead && this.character.isColliding(e)) {
                 this.character.hit();
                 console.log('hit by enemy', this.character.energy);
@@ -60,7 +60,7 @@ class World {
             }
         }
     }
-    
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -74,9 +74,9 @@ class World {
         this.addToMap(this.statusBar);
         this.ctx.translate(this.camera_x, 0);
 
+        this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0);
@@ -95,7 +95,7 @@ class World {
     }
 
     addToMap(mo) {
-        if(mo.otherDirection){
+        if (mo.otherDirection) {
             this.flipImage(mo);
         }
 
@@ -105,19 +105,19 @@ class World {
         mo.drawCharacterHitBox(this.ctx);
         mo.drawBottleBox(this.ctx);
 
-        if(mo.otherDirection){
-           this.flipImageBack(mo);
+        if (mo.otherDirection) {
+            this.flipImageBack(mo);
         }
     }
-    
-    flipImage(mo){
+
+    flipImage(mo) {
         this.ctx.save();
-        this.ctx.translate(mo.width , 0);
+        this.ctx.translate(mo.width, 0);
         this.ctx.scale(-1, 1);
         mo.x = mo.x * -1;
     }
 
-    flipImageBack(mo){
+    flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
