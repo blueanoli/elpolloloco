@@ -45,7 +45,7 @@ class World {
         for (let i = this.level.enemies.length - 1; i >= 0; i--) {
             let e = this.level.enemies[i];
 
-            if (!e.isDead && this.character.isStompboxColliding(e)) {
+            if (!e.isDead && this.character.isStompboxColliding(e)) { // ------------ NEED HELP!!!
                 e.chickenStomped();
                 console.log('chicken stomped by character');
                 setTimeout(() => {

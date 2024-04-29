@@ -13,6 +13,7 @@ class MovableObject extends DrawableObject {
                 this.speedY -= this.acceleration;
             }
         }, 1000 / 30);
+        console.log(this.y);
     }
 
     isAboveGround() {
@@ -59,12 +60,13 @@ class MovableObject extends DrawableObject {
         }
     }
 
-    isStompboxColliding(mo) {
-        let characterStompBottom = this.y + 280 + (this.height - 240);
+    isStompboxColliding(mo) { // ----------------------------- NEED HELP!!!
+        let characterStompBottom = this.y + 280 + (this.height - 320);
         let withinHorizontalBounds = (this.x -15 < mo.x + mo.width) && (this.x + this.width + 30 > mo.x);
         let stomping = characterStompBottom >= mo.y && characterStompBottom <= mo.y + mo.height;
-    
+        console.log(characterStompBottom, withinHorizontalBounds);
         return withinHorizontalBounds && stomping;
+      
     }
     
     hit() {
