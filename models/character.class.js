@@ -1,7 +1,7 @@
 class Character extends MovableObject {
     height = 280;
     y = 145;
-    speed = 7;
+    speed = 9;
 
 
     IMAGES_WALKING = [
@@ -81,46 +81,57 @@ class Character extends MovableObject {
     }
 
     animate() {
+        let idleTime = 0; 
+    
         setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
                 this.walking_sound.play();
+                idleTime = 0; 
             }
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();
+                idleTime = 0; 
             }
     
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            if (this.world.keyboard.SPACE && !this.isAboveGround()) { 
                 this.jump();
+                idleTime = 0; 
                 // this.jumping_sound.play();
             }
             this.world.camera_x = -this.x + 50;
     
-        }, 1000 / 30);
+            if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE) {
+                idleTime += 1000 / 30;
+            }
     
-        setInterval(() => {
-            if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isAboveGround()) { //----------------------------- NEED HELP!!!
-                if (this.y > 260) { 
-                    this.playAnimation(this.IMAGES_JUMP.slice(0, 3)); 
-                } else {
-                    this.playAnimation(this.IMAGES_JUMP.slice(4)); 
-                }
+            if (idleTime >= 3000) {
+                this.playAnimation(this.IMAGES_LONG_IDLE);
             } else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.playAnimation(this.IMAGES_WALKING);
+                if (this.isDead()) {
+                    this.playAnimation(this.IMAGES_DEAD);
+                } else if (this.isHurt()) {
+                    this.playAnimation(this.IMAGES_HURT);
+                } else if (this.isAboveGround()) { // ----------------- NEED HELP!!! don't know how to split the jump animation
+                    if (this.y > 260) { 
+                        this.playAnimation(this.IMAGES_JUMP.slice(0, 3)); 
+                    } else {
+                        this.playAnimation(this.IMAGES_JUMP.slice(4)); 
+                    }
+                } else {
+                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                        this.playAnimation(this.IMAGES_WALKING); //----------------- NEED HELP!!! background not smooth since I added IDLE
+                    } else {
+                        this.playAnimation(this.IMAGES_IDLE); 
+                    }
                 }
             }
-        }, 70);
+        }, 70); 
     }
     
-
 
 } // end of class Character

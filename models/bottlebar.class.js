@@ -14,7 +14,7 @@ class BottleBar extends StatusBar{
         this.y = 40;
     }
 
-    //Set Percentage ------------------------------------------------------- NEED HELP!!!
+    //Set Percentage ------------------------------------------------------- NEED HELP!!! can't get the bottle bar to work
 
 
 } // end of class BottleBar
