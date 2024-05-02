@@ -59,10 +59,9 @@ level1 = new Level( [
 
 ],
 [
-    new StatusBar()
-],
-[
-    new BottleBar()
+    new StatusBar(),
+    new BottleBar(),
+    new CoinBar()
 ]
 );
 }

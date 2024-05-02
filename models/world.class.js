@@ -7,6 +7,7 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     bottleBar = new BottleBar();
+    coinBar = new CoinBar();
     throwableObjects = [];
     level_music = new Audio('audio/elpolloloco.wav');
 
@@ -78,6 +79,7 @@ class World {
         // ----------- SPACE FOR FIXED OBJECTS ----------------
         this.addToMap(this.statusBar);
         this.addToMap(this.bottleBar);
+        this.addToMap(this.coinBar);
         this.ctx.translate(this.camera_x, 0);
 
         this.ctx.translate(-this.camera_x, 0);
