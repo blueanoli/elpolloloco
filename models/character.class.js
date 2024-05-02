@@ -80,33 +80,62 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    handleRightMovement() {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.moveRight();
+            this.otherDirection = false;
+            return true;
+        }
+        return false;
+    }
+    
+    handleLeftMovement() {
+        if (this.world.keyboard.LEFT && this.x > 0) {
+            this.moveLeft();
+            this.otherDirection = true;
+            return true;
+        }
+        return false;
+    }
+    
+    handleJump() {
+        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            this.jump();
+            return true;
+        }
+        return false;
+    }
+    
+    playWalkingSound() {
+        this.walking_sound.play();
+    }
+    
+    stopWalkingSound() {
+        this.walking_sound.pause();
+    }
+    
     animate() {
-        let idleTime = 0; 
+        let idleTime = 0;
     
         setInterval(() => {
-            this.walking_sound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.moveRight();
-                this.otherDirection = false;
-                this.walking_sound.play();
-                idleTime = 0; 
-            }
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.moveLeft();
-                this.otherDirection = true;
-                this.walking_sound.play();
-                idleTime = 0; 
+            let isMovingRight = this.handleRightMovement();
+            let isMovingLeft = this.handleLeftMovement();
+            let isJumping = this.handleJump();
+    
+            let isMoving = isMovingRight || isMovingLeft || isJumping;
+    
+            if (isMoving && !this.isAboveGround()) {
+                this.playWalkingSound();
+            } else {
+                this.stopWalkingSound();
             }
     
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) { 
-                this.jump();
-                idleTime = 0; 
-                // this.jumping_sound.play();
-            }
             this.world.camera_x = -this.x + 50;
     
-            if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE) {
+            if (!isMoving) {
                 idleTime += 1000 / 30;
+            } else {
+                idleTime = 0;
             }
     
             if (idleTime >= 3000) {
@@ -116,21 +145,21 @@ class Character extends MovableObject {
                     this.playAnimation(this.IMAGES_DEAD);
                 } else if (this.isHurt()) {
                     this.playAnimation(this.IMAGES_HURT);
-                } else if (this.isAboveGround()) { // ----------------- NEED HELP!!! don't know how to split the jump animation
-                    if (this.y > 260) { 
-                        this.playAnimation(this.IMAGES_JUMP.slice(0, 3)); 
+                } else if (this.isAboveGround()) {
+                    if (this.y > 260) {
+                        this.playAnimation(this.IMAGES_JUMP.slice(0, 3));
                     } else {
-                        this.playAnimation(this.IMAGES_JUMP.slice(4)); 
+                        this.playAnimation(this.IMAGES_JUMP.slice(4));
                     }
                 } else {
-                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                        this.playAnimation(this.IMAGES_WALKING); //----------------- NEED HELP!!! background not smooth since I added IDLE
+                    if (isMovingRight || isMovingLeft) {
+                        this.playAnimation(this.IMAGES_WALKING);
                     } else {
-                        this.playAnimation(this.IMAGES_IDLE); 
+                        this.playAnimation(this.IMAGES_IDLE);
                     }
                 }
             }
-        }, 70); 
+        }, 70);
     }
     
 
